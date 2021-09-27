@@ -39,7 +39,13 @@ namespace TechTest.Controllers
             // If null is returned from the PeopleRepository with
             // the supplied id then a NotFound should be returned.
 
-            throw new NotImplementedException();
+            Person person = this.PersonRepository.Get(id);
+
+            if (person is null) {
+                return NotFound();
+            }
+
+            return new OkObjectResult(person);
         }
 
         [HttpPut("{id}")]
