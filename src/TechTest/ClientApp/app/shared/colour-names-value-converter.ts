@@ -2,7 +2,7 @@ import { IColour } from '../people/interfaces/icolour';
 
 export class ColourNamesValueConverter {
 
-  toView(colours: IColour[]) {
+  toView(colours: IColour[]): string {
 
     // TODO: Step 4
     //
@@ -13,7 +13,10 @@ export class ColourNamesValueConverter {
     //
     // Example: 'Blue, Green, Red'
 
-    return 'Todo';
+    return colours
+      .map((colour) => colour.name)
+      .sort()
+      .join(', ');
   }
 
 }
