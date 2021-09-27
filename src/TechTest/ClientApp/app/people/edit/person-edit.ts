@@ -44,7 +44,18 @@ export class PersonEdit {
     // this.person object. If the response is successful then
     // the user should be navigated to the list page.
 
-    throw new Error('Not Implemented');
+    try {
+      await this.http.fetch(`/people/${this.person.id}`, {
+        method: "PUT",
+        body: json(this.person)
+      });
+
+      this.router.navigate('people');
+    } catch (error) {
+      console.error(error);
+
+      throw new Error('Error updating person.');
+    }
   }
 
   cancel() {
