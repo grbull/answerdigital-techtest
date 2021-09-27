@@ -60,7 +60,19 @@ namespace TechTest.Controllers
             // If null is returned from the PeopleRepository then a
             // NotFound should be returned.
 
-            throw new NotImplementedException();
+            Person person = this.PersonRepository.Get(id);
+
+            if (person is null) {
+                return NotFound();
+            }
+
+            person.Authorised = personUpdate.Authorised;
+            person.Enabled = personUpdate.Enabled;
+            person.Colours = personUpdate.Colours;
+
+            this.PersonRepository.Update(person);
+
+            return new OkObjectResult(person);
         }
     }
 }
