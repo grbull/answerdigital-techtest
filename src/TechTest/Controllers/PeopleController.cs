@@ -26,7 +26,7 @@ namespace TechTest.Controllers
             // people returned from PeopleRepository then an empty
             // JSON array should be returned.
 
-            throw new NotImplementedException();
+            return new OkObjectResult(this.PersonRepository.GetAll());
         }
 
         [HttpGet("{id}")]
