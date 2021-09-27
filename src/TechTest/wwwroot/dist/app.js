@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "a3d80179b5cdc7254c25"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "d2f2382c8e9217e3b2b5"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -24028,7 +24028,7 @@ function configure(config) {
 /* unused harmony export NumberRepeatStrategy */
 /* unused harmony export OneTimeBindingBehavior */
 /* unused harmony export OneWayBindingBehavior */
-/* unused harmony export Repeat */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Repeat; });
 /* unused harmony export RepeatStrategyLocator */
 /* unused harmony export Replaceable */
 /* unused harmony export SanitizeHTMLValueConverter */
@@ -25082,6 +25082,7 @@ var AbstractRepeater = (function () {
     return AbstractRepeater;
 }());
 
+var matcherExtractionMarker = '__marker_extracted__';
 var Repeat = (function (_super) {
     __extends(Repeat, _super);
     function Repeat(viewFactory, instruction, viewSlot, viewResources, observerLocator, strategyLocator) {
@@ -25109,7 +25110,11 @@ var Repeat = (function (_super) {
     };
     Repeat.prototype.bind = function (bindingContext, overrideContext) {
         this.scope = { bindingContext: bindingContext, overrideContext: overrideContext };
-        this.matcherBinding = this._captureAndRemoveMatcherBinding();
+        var instruction = this.instruction;
+        if (!(matcherExtractionMarker in instruction)) {
+            instruction[matcherExtractionMarker] = this._captureAndRemoveMatcherBinding();
+        }
+        this.matcherBinding = instruction[matcherExtractionMarker];
         this.itemsChanged();
     };
     Repeat.prototype.unbind = function () {
@@ -25210,10 +25215,10 @@ var Repeat = (function (_super) {
             if (Repeat_1.useInnerMatcher) {
                 return extractMatcherBindingExpression(instructions);
             }
-            if (template.children.length > 1) {
+            if (getChildrenCount(template) > 1) {
                 return undefined;
             }
-            var repeatedElement = template.firstElementChild;
+            var repeatedElement = getFirstElementChild(template);
             if (!repeatedElement.hasAttribute('au-target-id')) {
                 return undefined;
             }
@@ -25307,6 +25312,26 @@ var extractMatcherBindingExpression = function (instructions, targetedElementId)
             }
         }
     }
+};
+var getChildrenCount = function (el) {
+    var childNodes = el.childNodes;
+    var count = 0;
+    for (var i = 0, ii = childNodes.length; ii > i; ++i) {
+        if (childNodes[i].nodeType === 1) {
+            ++count;
+        }
+    }
+    return count;
+};
+var getFirstElementChild = function (el) {
+    var firstChild = el.firstChild;
+    while (firstChild !== null) {
+        if (firstChild.nodeType === 1) {
+            return firstChild;
+        }
+        firstChild = firstChild.nextSibling;
+    }
+    return null;
 };
 
 var aureliaHideClassName = 'aurelia-hide';
@@ -26454,12 +26479,16 @@ function configure(config) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_isomorphic_fetch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_isomorphic_fetch__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_aurelia_pal__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_aurelia_fetch_client__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bulma_css_bulma_css__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bulma_css_bulma_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_bulma_css_bulma_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_aurelia_templating_resources__ = __webpack_require__("aurelia-templating-resources");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_bulma_css_bulma_css__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_bulma_css_bulma_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_bulma_css_bulma_css__);
 
 
 
 
+
+// This is necessary for using a customn matcher within a repeat loop.
+__WEBPACK_IMPORTED_MODULE_3_aurelia_templating_resources__["b" /* Repeat */].useInnerMatcher = false;
 function configure(aurelia) {
     const http = new __WEBPACK_IMPORTED_MODULE_2_aurelia_fetch_client__["a" /* HttpClient */]();
     http.configure(config => {

@@ -2,8 +2,12 @@ import 'isomorphic-fetch';
 import { Aurelia } from 'aurelia-framework';
 import { PLATFORM } from 'aurelia-pal';
 import { HttpClient } from 'aurelia-fetch-client';
+import { Repeat } from 'aurelia-templating-resources';
 
 import 'bulma/css/bulma.css';
+
+// This is necessary for using a customn matcher within a repeat loop.
+Repeat.useInnerMatcher = false;
 
 declare const IS_DEV_BUILD: boolean; // The value is supplied by Webpack during the build
 
