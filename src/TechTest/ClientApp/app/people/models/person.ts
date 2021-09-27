@@ -37,6 +37,12 @@ export class Person implements IPerson {
     //
     // Example: 'Bo Bob' is a palindrome.
 
-    return false;
+    // Normalize fullName by removing spaces and make it case insensitive by
+    // converting the string to lower case.
+    const fullName = this.fullName.split(' ').join('').toLowerCase();
+    
+    const reversedFullName = fullName.split('').reverse().join('');
+
+    return fullName === reversedFullName;
   }
 }
